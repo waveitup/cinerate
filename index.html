@@ -31,6 +31,7 @@
         
         .ott-scroll::-webkit-scrollbar {
             height: 6px;
+            width: 6px;
         }
         .ott-scroll::-webkit-scrollbar-track {
             background: #090d16;
@@ -58,7 +59,7 @@
                 <span class="text-xl font-extrabold tracking-tight text-white">CINE<span class="bg-gradient-to-r from-sky-400 to-indigo-400 bg-clip-text text-transparent">RATE</span></span>
             </div>
             
-            <!-- Fixed & Broadened Search Bar Layout -->
+            <!-- Search Bar -->
             <div class="w-full md:max-w-xl relative">
                 <form id="searchForm" class="relative w-full">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
@@ -75,11 +76,9 @@
                         Search
                     </button>
                 </form>
-                <!-- Autocomplete Dropdown Box -->
                 <div id="previewDropdown" class="hidden absolute left-0 right-0 mt-2 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl overflow-hidden z-50 max-h-80 overflow-y-auto ott-scroll backdrop-blur-xl"></div>
             </div>
             
-            <!-- Spacer for visual balance on desktop desktop -->
             <div class="hidden md:block w-10"></div>
         </div>
     </header>
@@ -100,7 +99,7 @@
 
         <!-- VIEW 1: OTT PLATFORM HOME DASHBOARD -->
         <div id="homepageContainer" class="space-y-12">
-            <!-- Dynamic Randomized Spotlight Hero Billboard -->
+            <!-- Spotlight Hero Billboard -->
             <div id="heroBillboard" class="relative rounded-3xl overflow-hidden min-h-[460px] flex items-end p-6 sm:p-12 border border-slate-900 shadow-2xl bg-slate-950 transition-all duration-500">
                 <div id="heroBg" class="absolute inset-0 bg-cover bg-center opacity-30 scale-102 transition-all duration-700"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#030712]/60 to-transparent"></div>
@@ -117,26 +116,74 @@
                 </div>
             </div>
 
-            <!-- Row 1: Randomized Movies -->
+            <!-- Row 1: Trending Blockbusters -->
             <div class="space-y-4">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-xl font-bold tracking-tight text-white flex items-center gap-2.5">Recommended Movies</h2>
-                    <span class="text-xs text-slate-500 font-medium">Refreshed just now</span>
+                    <h2 class="text-xl font-bold tracking-tight text-white flex items-center gap-2.5">
+                        <i class="fa-solid fa-fire text-orange-500 text-sm"></i> Trending Blockbusters
+                    </h2>
                 </div>
-                <div id="movieShelf" class="flex gap-6 overflow-x-auto pb-4 ott-scroll snap-x snap-mandatory">
-                    <!-- Dynamic dynamic content insertion -->
-                </div>
+                <div id="trendingMoviesShelf" class="flex gap-6 overflow-x-auto pb-4 ott-scroll snap-x snap-mandatory"><div class="text-slate-600 text-xs py-4 pl-2 animate-pulse">Scanning infinite timelines...</div></div>
             </div>
 
-            <!-- Row 2: Randomized TV Shows -->
+            <!-- Row 2: Binge-Worthy Series -->
             <div class="space-y-4">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-xl font-bold tracking-tight text-white flex items-center gap-2.5">Trending TV Series</h2>
-                    <span class="text-xs text-slate-500 font-medium">Refreshed just now</span>
+                    <h2 class="text-xl font-bold tracking-tight text-white flex items-center gap-2.5">
+                        <i class="fa-solid fa-tv text-sky-500 text-sm"></i> Binge-Worthy TV Series
+                    </h2>
                 </div>
-                <div id="seriesShelf" class="flex gap-6 overflow-x-auto pb-4 ott-scroll snap-x snap-mandatory">
-                    <!-- Dynamic dynamic content insertion -->
+                <div id="bingeSeriesShelf" class="flex gap-6 overflow-x-auto pb-4 ott-scroll snap-x snap-mandatory"><div class="text-slate-600 text-xs py-4 pl-2 animate-pulse">Scanning infinite timelines...</div></div>
+            </div>
+
+            <!-- Row 3: Sci-Fi & Cyberpunk -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-bold tracking-tight text-white flex items-center gap-2.5">
+                        <i class="fa-solid fa-user-astronaut text-purple-500 text-sm"></i> Sci-Fi & Cyberpunk
+                    </h2>
                 </div>
+                <div id="scifiShelf" class="flex gap-6 overflow-x-auto pb-4 ott-scroll snap-x snap-mandatory"><div class="text-slate-600 text-xs py-4 pl-2 animate-pulse">Scanning infinite timelines...</div></div>
+            </div>
+
+            <!-- Row 4: Mystery & Psychological Thrillers -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-bold tracking-tight text-white flex items-center gap-2.5">
+                        <i class="fa-solid fa-mask text-amber-500 text-sm"></i> Mystery & Thrillers
+                    </h2>
+                </div>
+                <div id="mysteryShelf" class="flex gap-6 overflow-x-auto pb-4 ott-scroll snap-x snap-mandatory"><div class="text-slate-600 text-xs py-4 pl-2 animate-pulse">Scanning infinite timelines...</div></div>
+            </div>
+
+            <!-- Row 5: Acclaimed Dramas & Romances -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-bold tracking-tight text-white flex items-center gap-2.5">
+                        <i class="fa-solid fa-clapperboard text-rose-500 text-sm"></i> Acclaimed Drama & Romance
+                    </h2>
+                </div>
+                <div id="dramaShelf" class="flex gap-6 overflow-x-auto pb-4 ott-scroll snap-x snap-mandatory"><div class="text-slate-600 text-xs py-4 pl-2 animate-pulse">Scanning infinite timelines...</div></div>
+            </div>
+
+            <!-- Row 6: Action & High-Octane Adventures -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-bold tracking-tight text-white flex items-center gap-2.5">
+                        <i class="fa-solid fa-bolt text-yellow-400 text-sm"></i> Action & Adventure
+                    </h2>
+                </div>
+                <div id="actionShelf" class="flex gap-6 overflow-x-auto pb-4 ott-scroll snap-x snap-mandatory"><div class="text-slate-600 text-xs py-4 pl-2 animate-pulse">Scanning infinite timelines...</div></div>
+            </div>
+
+            <!-- Row 7: Cult Classics & Hidden Gems -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-bold tracking-tight text-white flex items-center gap-2.5">
+                        <i class="fa-solid fa-gem text-emerald-500 text-sm"></i> Cult Classics & Hidden Gems
+                    </h2>
+                </div>
+                <div id="hiddenGemsShelf" class="flex gap-6 overflow-x-auto pb-4 ott-scroll snap-x snap-mandatory"><div class="text-slate-600 text-xs py-4 pl-2 animate-pulse">Scanning infinite timelines...</div></div>
             </div>
         </div>
 
@@ -149,7 +196,7 @@
             <div id="resultsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
         </div>
 
-        <!-- VIEW 3: DEDICATED RATINGS PROFILE -->
+        <!-- VIEW 3: DEDICATED RATINGS PROFILE & HEATMAP MATRIX -->
         <div id="detailViewContainer" class="hidden max-w-5xl mx-auto">
             <button onclick="backToPreviousView()" class="group mb-6 text-sm text-slate-400 hover:text-white font-semibold flex items-center gap-2 bg-slate-900/50 border border-slate-800/80 px-4 py-2 rounded-xl backdrop-blur-sm">
                 <i class="fa-solid fa-arrow-left group-hover:-translate-x-0.5 transition-transform"></i> Back
@@ -181,49 +228,80 @@
         let debounceTimer;
         let activeView = 'home'; 
 
-        // Deep Content Pool for Dynamic Home Catalog Randomization
-        const spotlightPool = ['tt1375666', 'tt0816692', 'tt1130884', 'tt6751668', 'tt0111161', 'tt2488496', 'tt0468569', 'tt1375666'];
-        
-        const movieMasterPool = [
-            'tt1375666', 'tt0816692', 'tt1130884', 'tt6751668', 'tt0111161', 
-            'tt0468569', 'tt0109830', 'tt0133093', 'tt0068646', 'tt15097216',
-            'tt1160419', 'tt2084970', 'tt3501632', 'tt0110912', 'tt0114709'
-        ]; // Inception, Interstellar, Shutter Island, Parasite, Shawshank, Dark Knight, Forrest Gump, Matrix, Godfather, Dune 2, etc.
-        
-        const seriesMasterPool = [
-            'tt0944947', 'tt1190634', 'tt2357228', 'tt9140554', 'tt8111088', 
-            'tt0903747', 'tt4786824', 'tt6468322', 'tt4574334', 'tt12448384',
-            'tt2560112', 'tt14366814', 'tt5103134', 'tt1798709', 'tt3032476'
-        ]; // Game of Thrones, The Boys, Modern Family, Loki, Mandalorian, Breaking Bad, The Crown, Money Heist, Stranger Things, Shogun, etc.
+        // Structural Keyword Seed Vectors to trigger infinite distinct variations upon random queries
+        const searchSeeds = {
+            movies: ['world', 'dark', 'man', 'last', 'love', 'dead', 'star', 'blue', 'night', 'red', 'kill', 'time', 'house', 'city', 'secret', 'blood', 'lost', 'shadow'],
+            series: ['chronicles', 'story', 'life', 'game', 'space', 'detective', 'office', 'murder', 'valley', 'witch', 'legend', 'academy', 'agents', 'empire', 'crime'],
+            scifi: ['space', 'future', 'mars', 'alien', 'cyber', 'robot', 'galaxy', 'matrix', 'star', 'clones', 'moon', 'universe', 'planet'],
+            mystery: ['spy', 'killer', 'secret', 'lies', 'fog', 'hunt', 'truth', 'silent', 'missing', 'darkness', 'mind', 'cold', 'ghost'],
+            drama: ['heart', 'tears', 'home', 'marriage', 'years', 'river', 'dreams', 'forever', 'remember', 'winter', 'street', 'son', 'daughter'],
+            action: ['furious', 'strike', 'rush', 'bullet', 'race', 'hunt', 'warrior', 'vengeance', 'justice', 'fight', 'danger', 'die', 'driver']
+        };
 
-        // Application Start
         window.addEventListener('DOMContentLoaded', () => {
             initializeDynamicHomepage();
         });
 
-        function initializeDynamicHomepage() {
-            // 1. Pick and render a random spotlight piece
-            const randomSpotlightId = spotlightPool[Math.floor(Math.random() * spotlightPool.length)];
-            loadHeroSpotlight(randomSpotlightId);
-
-            // 2. Mix, slice and paint dynamic rows
-            const randomMovies = shuffleArray([...movieMasterPool]).slice(0, 8);
-            const randomSeries = shuffleArray([...seriesMasterPool]).slice(0, 8);
-
-            loadShelfCollection(randomMovies, 'movieShelf');
-            loadShelfCollection(randomSeries, 'seriesShelf');
+        function getRandomElement(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
         }
 
-        // Standard Utility Shuffle Function
-        function shuffleArray(arr) {
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
+        // Structural Randomizer Engine to pull non-deterministic sets of results
+        async function fetchRandomCategoryData(type, categoryKeywordPool, maxResults = 8) {
+            const randomKeyword = getRandomElement(categoryKeywordPool);
+            // Randomize continuous page depth offsets to diversify matching queries on reload
+            const randomPage = Math.floor(Math.random() * 3) + 1; 
+            
+            let queryUrl = `${BASE_URL}?apikey=${API_KEY}&s=${encodeURIComponent(randomKeyword)}&page=${randomPage}`;
+            if (type === 'movie' || type === 'series') {
+                queryUrl += `&type=${type}`;
             }
-            return arr;
+
+            try {
+                const res = await fetch(queryUrl);
+                const data = await res.json();
+                if (data.Response === "True" && data.Search) {
+                    // Randomize order of data block payload items array
+                    let items = data.Search.sort(() => 0.5 - Math.random());
+                    return items.slice(0, maxResults);
+                }
+            } catch (e) {
+                console.error("Infinite seed allocation variant crash: ", e);
+            }
+            return [];
         }
 
-        // Spotlight Random Content Loader
+        async function initializeDynamicHomepage() {
+            // Populate category content slots completely dynamically in parallel
+            const processes = [
+                fetchRandomCategoryData('movie', searchSeeds.movies),
+                fetchRandomCategoryData('series', searchSeeds.series),
+                fetchRandomCategoryData('movie', searchSeeds.scifi),
+                fetchRandomCategoryData('movie', searchSeeds.mystery),
+                fetchRandomCategoryData('movie', searchSeeds.drama),
+                fetchRandomCategoryData('movie', searchSeeds.action),
+                fetchRandomCategoryData('movie', searchSeeds.movies) // Used as fallback variant loop container for Hidden Gems
+            ];
+
+            const [trending, binge, scifi, mystery, drama, action, gems] = await Promise.all(processes);
+
+            // Populate shelves
+            renderShelf(trending, 'trendingMoviesShelf');
+            renderShelf(binge, 'bingeSeriesShelf');
+            renderShelf(scifi, 'scifiShelf');
+            renderShelf(mystery, 'mysteryShelf');
+            renderShelf(drama, 'dramaShelf');
+            renderShelf(action, 'actionShelf');
+            renderShelf(gems, 'hiddenGemsShelf');
+
+            // Pick an unpredictable item payload element to update the Billboard Banner Hero spot
+            const allFetchedItems = [...trending, ...binge, ...scifi, ...mystery];
+            if(allFetchedItems.length > 0) {
+                const randomSpotlight = getRandomElement(allFetchedItems);
+                loadHeroSpotlight(randomSpotlight.imdbID);
+            }
+        }
+
         async function loadHeroSpotlight(id) {
             try {
                 const res = await fetch(`${BASE_URL}?apikey=${API_KEY}&i=${id}&plot=full`);
@@ -234,10 +312,44 @@
                     document.getElementById('heroPlot').innerText = data.Plot !== 'N/A' ? data.Plot : 'No description recorded.';
                     document.getElementById('heroBtn').onclick = () => selectItem(data.imdbID);
                 }
-            } catch(e) { console.error("Spotlight rendering error", e); }
+            } catch(e) { console.error(e); }
         }
 
-        // Auto-Complete System
+        async function renderShelf(itemsList, elementId) {
+            const targetShelf = document.getElementById(elementId);
+            if (!itemsList || itemsList.length === 0) {
+                targetShelf.innerHTML = `<div class="text-slate-700 text-xs py-4 pl-2">Timeline line trace currently unavailable.</div>`;
+                return;
+            }
+            targetShelf.innerHTML = '';
+            
+            // Loop array elements and fetch real-time specific metrics (ratings)
+            for (let summaryItem of itemsList) {
+                try {
+                    const res = await fetch(`${BASE_URL}?apikey=${API_KEY}&i=${summaryItem.imdbID}`);
+                    const item = await res.json();
+                    if(item.Response === "True") {
+                        const card = document.createElement('div');
+                        card.className = 'w-44 sm:w-48 flex-shrink-0 snap-start group cursor-pointer bg-slate-900/30 border border-slate-800/60 rounded-2xl overflow-hidden p-2 hover:border-slate-700 transition-all duration-300';
+                        card.onclick = () => selectItem(item.imdbID);
+                        
+                        const poster = (item.Poster && item.Poster !== 'N/A') ? item.Poster : 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=400&auto=format&fit=crop';
+                        const displayRating = (item.imdbRating && item.imdbRating !== 'N/A') ? item.imdbRating : '—';
+
+                        card.innerHTML = `
+                            <div class="relative overflow-hidden aspect-[2/3] bg-slate-950 rounded-xl mb-3">
+                                <img src="${poster}" class="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500">
+                                <div class="absolute bottom-2 right-2 text-[10px] bg-slate-950/80 backdrop-blur-md text-emerald-400 px-1.5 py-0.5 rounded font-bold border border-slate-800/40"><i class="fa-solid fa-star text-[9px] mr-1"></i>${displayRating}</div>
+                            </div>
+                            <h3 class="font-semibold text-xs text-slate-200 line-clamp-1 group-hover:text-white transition-colors px-1">${item.Title}</h3>
+                            <p class="text-[11px] text-slate-500 font-medium mt-0.5 px-1">${item.Year} • ${item.Type === 'series' ? 'TV' : 'Movie'}</p>
+                        `;
+                        targetShelf.appendChild(card);
+                    }
+                } catch(e) { console.error(e); }
+            }
+        }
+
         searchInput.addEventListener('input', (e) => {
             const query = e.target.value.trim();
             clearTimeout(debounceTimer);
@@ -279,7 +391,6 @@
             previewDropdown.classList.remove('hidden');
         }
 
-        // Global Search Submission Form
         searchForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const query = searchInput.value.trim();
@@ -302,9 +413,7 @@
                 } else {
                     showErrorMessage('No titles located matching that search term.');
                 }
-            } catch (err) {
-                showErrorMessage('Network lookup error occurred.');
-            }
+            } catch (err) { showErrorMessage('Network lookup error occurred.'); }
         });
 
         function renderGrid(items, elementTarget) {
@@ -325,36 +434,6 @@
             }).join('');
         }
 
-        // Lazy-loading Dynamic Stream Rows
-        async function loadShelfCollection(idArray, elementId) {
-            const targetShelf = document.getElementById(elementId);
-            targetShelf.innerHTML = '';
-            
-            for (let id of idArray) {
-                try {
-                    const res = await fetch(`${BASE_URL}?apikey=${API_KEY}&i=${id}`);
-                    const item = await res.json();
-                    if(item.Response === "True") {
-                        const card = document.createElement('div');
-                        card.className = 'w-44 sm:w-48 flex-shrink-0 snap-start group cursor-pointer bg-slate-900/30 border border-slate-800/60 rounded-2xl overflow-hidden p-2 hover:border-slate-700 transition-all duration-300';
-                        card.onclick = () => selectItem(item.imdbID);
-                        
-                        const poster = (item.Poster && item.Poster !== 'N/A') ? item.Poster : 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=400&auto=format&fit=crop';
-                        card.innerHTML = `
-                            <div class="relative overflow-hidden aspect-[2/3] bg-slate-950 rounded-xl mb-3">
-                                <img src="${poster}" class="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500">
-                                <div class="absolute bottom-2 right-2 text-[10px] bg-slate-950/80 backdrop-blur-md text-emerald-400 px-1.5 py-0.5 rounded font-bold border border-slate-800/40"><i class="fa-solid fa-star text-[9px] mr-1"></i>${item.imdbRating}</div>
-                            </div>
-                            <h3 class="font-semibold text-xs text-slate-200 line-clamp-1 group-hover:text-white transition-colors px-1">${item.Title}</h3>
-                            <p class="text-[11px] text-slate-500 font-medium mt-0.5 px-1">${item.Year} • ${item.Type === 'series' ? 'TV' : 'Movie'}</p>
-                        `;
-                        targetShelf.appendChild(card);
-                    }
-                } catch(e) { console.error("Shelf dynamic item load failure", e); }
-            }
-        }
-
-        // Detailed Content Display Node
         async function selectItem(imdbID) {
             previewDropdown.classList.add('hidden');
             homepageContainer.classList.add('hidden');
@@ -368,12 +447,8 @@
                 if (data.Response === "True") {
                     activeView = 'details';
                     renderDetailCard(data);
-                } else {
-                    showErrorMessage('Failed to display item profile details.');
-                }
-            } catch (err) {
-                showErrorMessage('Data extraction failure.');
-            }
+                } else { showErrorMessage('Failed to display item profile details.'); }
+            } catch (err) { showErrorMessage('Data extraction failure.'); }
         }
 
         function renderDetailCard(data) {
@@ -402,8 +477,36 @@
                 </div>
             `;
 
+            let matrixGraphHtml = '';
             let episodicEngineHtml = '';
+
             if (isSeries && data.totalSeasons !== 'N/A') {
+                matrixGraphHtml = `
+                    <div class="bg-slate-900/10 border border-slate-900 rounded-3xl p-6 space-y-4">
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                            <div>
+                                <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-table-cells text-sky-500"></i> Episode Graph</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Interactive vertical timeline dashboard. S1, S2, etc. are aligned along top columns.</p>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[10px] font-bold tracking-wider uppercase text-slate-400 bg-slate-950/40 p-2.5 rounded-xl border border-slate-900">
+                                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-blue-600 block"></span> Absolute cinema</span>
+                                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-emerald-700 block"></span> Awesome</span>
+                                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-green-500 block"></span> Great</span>
+                                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-yellow-400 block"></span> Good</span>
+                                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-amber-600 block"></span> Regular</span>
+                                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-red-600 block"></span> Bad</span>
+                                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-purple-700 block"></span> Garbage</span>
+                            </div>
+                        </div>
+                        
+                        <div class="overflow-x-auto pb-2 ott-scroll">
+                            <div id="heatmapGridContainer" class="min-w-[400px] space-y-2 py-2">
+                                <div class="text-center text-xs text-slate-600 py-4 animate-pulse">Generating vertical graphical breakdown...</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
                 let seasonOptions = '';
                 for (let i = 1; i <= parseInt(data.totalSeasons); i++) {
                     seasonOptions += `<option value="${i}">Season ${i}</option>`;
@@ -413,8 +516,8 @@
                     <div class="mt-8 border-t border-slate-900 pt-6">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                             <div>
-                                <h3 class="text-base font-bold text-white">Episode Guide</h3>
-                                <p class="text-xs text-slate-500 mt-0.5">Select a season to browse individual episode images and ratings</p>
+                                <h3 class="text-base font-bold text-white">Episode List</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Select a season to browse individual episode cards</p>
                             </div>
                             <div class="relative">
                                 <select id="seasonSelector" class="w-full sm:w-auto bg-slate-900 border border-slate-800 text-xs font-semibold rounded-xl pl-3 pr-8 py-2 text-white focus:outline-none focus:border-sky-500 cursor-pointer appearance-none" onchange="loadEpisodes('${data.imdbID}', this.value)">
@@ -429,14 +532,123 @@
                 `;
             }
 
-            detailContent.innerHTML = profileHeaderHtml + episodicEngineHtml;
+            detailContent.innerHTML = profileHeaderHtml + matrixGraphHtml + episodicEngineHtml;
 
             if (isSeries && data.totalSeasons !== 'N/A') {
+                buildHeatmapGraph(data.imdbID, parseInt(data.totalSeasons));
                 loadEpisodes(data.imdbID, 1);
             }
         }
 
-        // Sub-request Engine for Individual Episode Thumbnails
+        async function buildHeatmapGraph(imdbID, totalSeasons) {
+            const container = document.getElementById('heatmapGridContainer');
+            let seasonFetchPromises = [];
+
+            for (let s = 1; s <= totalSeasons; s++) {
+                seasonFetchPromises.push(fetch(`${BASE_URL}?apikey=${API_KEY}&i=${imdbID}&Season=${s}`).then(r => r.json()));
+            }
+
+            try {
+                const seasonsData = await Promise.all(seasonFetchPromises);
+                container.innerHTML = '';
+
+                let maxEpisodes = 0;
+                seasonsData.forEach(s => {
+                    if (s.Response === "True" && s.Episodes) {
+                        maxEpisodes = Math.max(maxEpisodes, s.Episodes.length);
+                    }
+                });
+
+                let axisHeaderHtml = `<div class="flex items-center gap-1.5 text-[10px] font-bold text-slate-600 border-b border-slate-900 pb-2"><div class="w-16 flex-shrink-0 text-left">Timeline</div>`;
+                for(let sLabel = 1; sLabel <= totalSeasons; sLabel++) {
+                    axisHeaderHtml += `<div class="w-8 text-center text-[10px] text-sky-400 font-extrabold uppercase">S${sLabel}</div>`;
+                }
+                axisHeaderHtml += `</div>`;
+                container.innerHTML += axisHeaderHtml;
+
+                for (let epIdx = 1; epIdx <= maxEpisodes; epIdx++) {
+                    let rowHtml = `<div class="flex items-center gap-1.5"><div class="w-16 flex-shrink-0 text-xs font-bold text-slate-400">Ep ${epIdx}</div>`;
+
+                    for (let sIdx = 0; sIdx < totalSeasons; sIdx++) {
+                        const season = seasonsData[sIdx];
+                        
+                        if (season.Response === "True" && season.Episodes && season.Episodes[epIdx - 1]) {
+                            const ep = season.Episodes[epIdx - 1];
+                            const rating = parseFloat(ep.imdbRating);
+                            let colorClass = 'bg-slate-800 text-slate-500';
+                            
+                            if (!isNaN(rating)) {
+                                if (rating > 9.5) {
+                                    colorClass = 'bg-blue-600 text-blue-50 ring-1 ring-blue-400/30';
+                                } else if (rating >= 9.0) {
+                                    colorClass = 'bg-emerald-700 text-emerald-50';
+                                } else if (rating >= 8.0) {
+                                    colorClass = 'bg-green-500 text-slate-950';
+                                } else if (rating >= 7.0) {
+                                    colorClass = 'bg-yellow-400 text-slate-950';
+                                } else if (rating >= 6.0) {
+                                    colorClass = 'bg-amber-600 text-amber-950';
+                                } else if (rating >= 5.0) {
+                                    colorClass = 'bg-red-600 text-red-50';
+                                } else if (rating >= 1.0) {
+                                    colorClass = 'bg-purple-700 text-purple-50';
+                                }
+                            }
+
+                            const displayRating = ep.imdbRating !== 'N/A' ? ep.imdbRating : '—';
+                            const escapeTitle = ep.Title.replace(/'/g, "&apos;");
+                            const currentSeasonNum = sIdx + 1;
+
+                            rowHtml += `
+                                <div 
+                                    class="w-8 h-8 aspect-square ${colorClass} text-[10px] font-extrabold flex items-center justify-center rounded-md cursor-pointer hover:scale-110 hover:z-20 transition-transform relative group/cell shadow-sm select-none"
+                                    title="S${currentSeasonNum}E${ep.Episode}: ${escapeTitle} (${displayRating})"
+                                    onclick="jumpToSeasonAndHighlight(${currentSeasonNum}, ${ep.Episode})"
+                                >
+                                    ${displayRating}
+                                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/cell:block w-48 bg-slate-950 text-white border border-slate-800 text-[10px] p-2 rounded-xl shadow-2xl z-30 pointer-events-none font-normal">
+                                        <p class="font-bold text-sky-400">S${currentSeasonNum} • Ep ${ep.Episode}</p>
+                                        <p class="font-medium text-slate-200 truncate mt-0.5">${escapeTitle}</p>
+                                        <p class="font-black text-sky-400 mt-1"><i class="fa-solid fa-star text-[9px] mr-0.5"></i> ${displayRating}</p>
+                                    </div>
+                                </div>`;
+                        } else {
+                            rowHtml += `<div class="w-8 h-8 aspect-square bg-slate-900/10 rounded-md border border-dashed border-slate-900/40"></div>`;
+                        }
+                    }
+
+                    rowHtml += `</div>`;
+                    container.innerHTML += rowHtml;
+                }
+
+            } catch (err) {
+                container.innerHTML = `<div class="text-xs text-red-400">Failed to render graph vertically.</div>`;
+            }
+        }
+
+        function jumpToSeasonAndHighlight(seasonNum, episodeNum) {
+            const selector = document.getElementById('seasonSelector');
+            if(selector) {
+                selector.value = seasonNum;
+                // Identify dynamic ID bound context elements
+                const currentId = document.getElementById('heroBtn').onclick.toString().match(/tt\d+/)[0];
+                loadEpisodes(currentId, seasonNum).then(() => {
+                    setTimeout(() => {
+                        const targetCard = document.getElementById(`ep-card-container-${episodeNum}`);
+                        if(targetCard) {
+                            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            targetCard.classList.remove('border-slate-800/60');
+                            targetCard.classList.add('border-sky-500', 'ring-4', 'ring-sky-500/10');
+                            setTimeout(() => {
+                                targetCard.classList.remove('border-sky-500', 'ring-4', 'ring-sky-500/10');
+                                targetCard.classList.add('border-slate-700');
+                            }, 2500);
+                        }
+                    }, 400);
+                });
+            }
+        }
+
         async function loadEpisodes(imdbID, seasonNum) {
             const grid = document.getElementById('episodesGrid');
             const loader = document.getElementById('episodesLoading');
@@ -449,7 +661,7 @@
                 
                 if (data.Response === "True" && data.Episodes) {
                     grid.innerHTML = data.Episodes.map((ep, idx) => `
-                        <div id="ep-card-${idx}" class="bg-slate-900/30 border border-slate-800/60 rounded-xl overflow-hidden p-3.5 flex gap-4 hover:border-slate-700 transition-colors shadow-md backdrop-blur-sm">
+                        <div id="ep-card-container-${ep.Episode}" class="bg-slate-900/30 border border-slate-800/60 rounded-xl overflow-hidden p-3.5 flex gap-4 hover:border-slate-700 transition-all duration-300 shadow-md backdrop-blur-sm">
                             <div class="w-24 h-16 sm:w-28 sm:h-20 bg-slate-950 rounded-lg flex-shrink-0 overflow-hidden relative border border-slate-800/40">
                                 <img id="ep-img-${idx}" src="" class="w-full h-full object-cover opacity-0 transition-opacity duration-300">
                                 <div id="ep-fallback-${idx}" class="absolute inset-0 flex items-center justify-center bg-slate-900 text-slate-600 text-xs font-bold font-sans">EP ${ep.Episode}</div>
@@ -472,7 +684,6 @@
                     
                     loader.classList.add('hidden');
 
-                    // Fire image lookup fetches concurrently
                     data.Episodes.forEach(async (ep, idx) => {
                         if (ep.imdbID) {
                             try {
@@ -488,7 +699,7 @@
                                         if (fallbackElement) fallbackElement.classList.add('hidden');
                                     }
                                 }
-                            } catch (e) { console.error("Episode thumbnail fetch error", e); }
+                            } catch (e) { console.error(e); }
                         }
                     });
 
@@ -502,7 +713,6 @@
             }
         }
 
-        // Navigation Controllers
         function showHomepage() {
             activeView = 'home';
             searchInput.value = '';
@@ -511,8 +721,6 @@
             resultsGridContainer.classList.add('hidden');
             hideLoader();
             homepageContainer.classList.remove('hidden');
-            
-            // Re-shuffle everything when returning to the dashboard naturally
             initializeDynamicHomepage();
         }
 
@@ -531,18 +739,13 @@
             statusMessage.innerText = msg;
         }
 
-        function hideLoader() {
-            statusState.classList.add('hidden');
-            statusSpinner.classList.add('hidden');
-        }
-
+        function hideLoader() { statusState.classList.add('hidden'); }
         function showErrorMessage(msg) {
             statusState.classList.remove('hidden');
             statusSpinner.classList.add('hidden');
             statusMessage.innerText = msg;
         }
 
-        // Click wrapper closing mechanics
         document.addEventListener('click', (e) => {
             if (!searchForm.contains(e.target) && !previewDropdown.contains(e.target)) {
                 previewDropdown.classList.add('hidden');
