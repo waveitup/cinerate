@@ -1,316 +1,243 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CineRate - Stream Ratings & Analytics</title>
-    <!-- Tailwind CSS for Modern UI -->
+    <title>CineRate — Streamlined Ratings & Guides</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .ott-scroll::-webkit-scrollbar {
             height: 6px;
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #0f172a;
+        .ott-scroll::-webkit-scrollbar-track {
+            background: #090d16;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
+        .ott-scroll::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+        .ott-scroll::-webkit-scrollbar-thumb:hover {
             background: #334155;
-            border-radius: 4px;
-        }
-        /* Netflix-style horizontal row scrolling */
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
         }
     </style>
 </head>
-<body class="bg-gray-980 text-gray-100 min-h-screen font-sans bg-[#0b0f19]">
+<body class="bg-[#030712] text-slate-100 min-h-screen selection:bg-sky-500/30 selection:text-sky-200 overflow-y-scroll">
 
-    <!-- Navbar -->
-    <nav class="border-b border-gray-900 bg-[#0f172a]/60 backdrop-blur-lg sticky top-0 z-50 transition-colors duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-6">
-                <!-- Premium Logo triggers Home Refresh -->
-                <div onclick="showHomepage()" class="flex items-center space-x-2 text-2xl font-black tracking-tighter text-red-600 cursor-pointer select-none hover:opacity-90">
-                    <i class="fa-solid fa-play-css text-xl text-red-500 animate-pulse"></i>
-                    <span>CINE<span class="text-white">RATE</span></span>
+    <!-- Header Section -->
+    <header class="border-b border-slate-900 bg-[#030712]/90 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex flex-col md:flex-row justify-between items-center gap-4 py-4 md:py-0">
+            
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 group cursor-pointer self-start md:self-center" onclick="showHomepage()">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/20 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-play text-white text-sm ml-0.5"></i>
                 </div>
-                <!-- Navigation Links -->
-                <div class="flex items-center space-x-5 text-sm font-medium text-gray-400">
-                    <span id="navHome" onclick="showHomepage()" class="text-white cursor-pointer hover:text-white transition-colors">Home</span>
-                    <span id="navMovies" onclick="filterCategoryPage('movie')" class="cursor-pointer hover:text-white transition-colors">Movies</span>
-                    <span id="navTV" onclick="filterCategoryPage('series')" class="cursor-pointer hover:text-white transition-colors">TV Shows</span>
-                </div>
+                <span class="text-xl font-extrabold tracking-tight text-white">CINE<span class="bg-gradient-to-r from-sky-400 to-indigo-400 bg-clip-text text-transparent">RATE</span></span>
             </div>
+            
+            <!-- Fixed & Broadened Search Bar Layout -->
+            <div class="w-full md:max-w-xl relative">
+                <form id="searchForm" class="relative w-full">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass text-base"></i>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Search for movies, TV shows, genres..." 
+                        autocomplete="off"
+                        class="w-full pl-12 pr-24 py-3.5 bg-slate-900/80 border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10 text-white placeholder-slate-500 transition-all text-sm font-medium backdrop-blur-md shadow-inner"
+                    >
+                    <button type="submit" class="absolute right-2 top-2 bottom-2 px-5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-lg transition-all shadow-md shadow-sky-600/10">
+                        Search
+                    </button>
+                </form>
+                <!-- Autocomplete Dropdown Box -->
+                <div id="previewDropdown" class="hidden absolute left-0 right-0 mt-2 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl overflow-hidden z-50 max-h-80 overflow-y-auto ott-scroll backdrop-blur-xl"></div>
+            </div>
+            
+            <!-- Spacer for visual balance on desktop desktop -->
+            <div class="hidden md:block w-10"></div>
         </div>
-    </nav>
+    </header>
 
-    <!-- Main Workspace Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-24">
+    <!-- Main Content Stage Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
         
-        <!-- GLOBAL SEARCH BAR -->
-        <div class="max-w-2xl mx-auto relative mb-12">
-            <form id="searchForm" class="flex items-center relative">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500">
-                    <i class="fa-solid fa-magnifying-glass"></i>
+        <!-- STATUS INDICATOR -->
+        <div id="statusState" class="hidden text-center py-20">
+            <div id="statusSpinner" class="hidden mb-4">
+                <div class="inline-block relative w-12 h-12">
+                    <div class="absolute top-0 left-0 w-full h-full border-4 border-slate-900 rounded-full"></div>
+                    <div class="absolute top-0 left-0 w-full h-full border-4 border-sky-500 rounded-full border-t-transparent animate-spin"></div>
                 </div>
-                <input 
-                    type="text" 
-                    id="searchInput" 
-                    placeholder="Search movies, TV shows, seasons..." 
-                    autocomplete="off"
-                    class="w-full pl-12 pr-24 py-3.5 bg-gray-900/80 border border-gray-800 rounded-xl focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/10 text-white placeholder-gray-500 transition-all shadow-xl text-base"
-                >
-                <button 
-                    type="submit" 
-                    class="absolute right-2 top-2 bottom-2 px-5 bg-red-600 hover:bg-red-500 text-white font-medium rounded-lg transition-colors text-xs uppercase tracking-wider"
-                >
-                    Search
-                </button>
-            </form>
-
-            <!-- LIVE PREVIEW SUGGESTION DROPDOWN -->
-            <div 
-                id="previewDropdown" 
-                class="hidden absolute left-0 right-0 mt-2 bg-[#131a2c] border border-gray-800 rounded-xl shadow-2xl overflow-hidden z-50 max-h-72 overflow-y-auto custom-scrollbar"
-            >
-                <!-- Autocomplete items load here -->
             </div>
+            <p id="statusMessage" class="text-slate-400 font-medium max-w-sm mx-auto text-sm"></p>
         </div>
 
-        <!-- ==================== VIEW 1: HOME PLATFORM VIEW ==================== -->
+        <!-- VIEW 1: OTT PLATFORM HOME DASHBOARD -->
         <div id="homepageContainer" class="space-y-12">
-            <!-- Dynamic Spotlight Hero Banner -->
-            <div id="spotlightHero" class="w-full h-48 md:h-72 rounded-3xl overflow-hidden relative shadow-2xl border border-gray-900 bg-gradient-to-r from-gray-900 to-slate-950 flex items-center p-8 bg-cover bg-center">
-                <div class="absolute inset-0 bg-black/60 z-10"></div>
-                <div id="heroDynamicContent" class="relative z-20 max-w-xl">
-                    <!-- Loaded dynamically via random shuffle -->
+            <!-- Dynamic Randomized Spotlight Hero Billboard -->
+            <div id="heroBillboard" class="relative rounded-3xl overflow-hidden min-h-[460px] flex items-end p-6 sm:p-12 border border-slate-900 shadow-2xl bg-slate-950 transition-all duration-500">
+                <div id="heroBg" class="absolute inset-0 bg-cover bg-center opacity-30 scale-102 transition-all duration-700"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#030712]/60 to-transparent"></div>
+                
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <span class="text-xs font-bold uppercase tracking-widest text-sky-400 bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/20">Featured Selection</span>
+                    <h1 id="heroTitle" class="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">Loading Title...</h1>
+                    <p id="heroPlot" class="text-slate-300 text-sm sm:text-base leading-relaxed font-light line-clamp-3">...</p>
+                    <div class="pt-2 flex items-center gap-4">
+                        <button id="heroBtn" class="px-6 py-3 bg-white hover:bg-slate-200 text-slate-950 font-bold rounded-xl transition-all shadow-lg flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-circle-info"></i> Rating Insights
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Dynamic Trending Movies Shelves -->
-            <div>
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold tracking-tight text-white flex items-center gap-2"><i class="fa-solid fa-fire text-orange-500"></i> Trending Movies</h3>
-                    <button onclick="initializeHomepageShelves()" class="text-xs text-gray-500 hover:text-red-400 transition-colors flex items-center gap-1"><i class="fa-solid fa-shuffle"></i> Shuffle Home</button>
+            <!-- Row 1: Randomized Movies -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-bold tracking-tight text-white flex items-center gap-2.5">Recommended Movies</h2>
+                    <span class="text-xs text-slate-500 font-medium">Refreshed just now</span>
                 </div>
-                <div id="trendingMoviesRow" class="flex gap-4 overflow-x-auto hide-scrollbar pb-2 scroll-smooth min-h-[250px]">
-                    <!-- Shuffled cards load here -->
+                <div id="movieShelf" class="flex gap-6 overflow-x-auto pb-4 ott-scroll snap-x snap-mandatory">
+                    <!-- Dynamic dynamic content insertion -->
                 </div>
             </div>
 
-            <!-- Dynamic Popular TV Shows Shelves -->
-            <div>
-                <h3 class="text-xl font-bold mb-4 tracking-tight text-white flex items-center gap-2"><i class="fa-solid fa-tv text-purple-400"></i> Popular TV Shows</h3>
-                <div id="popularTVRow" class="flex gap-4 overflow-x-auto hide-scrollbar pb-2 scroll-smooth min-h-[250px]">
-                    <!-- Shuffled cards load here -->
+            <!-- Row 2: Randomized TV Shows -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-bold tracking-tight text-white flex items-center gap-2.5">Trending TV Series</h2>
+                    <span class="text-xs text-slate-500 font-medium">Refreshed just now</span>
+                </div>
+                <div id="seriesShelf" class="flex gap-6 overflow-x-auto pb-4 ott-scroll snap-x snap-mandatory">
+                    <!-- Dynamic dynamic content insertion -->
                 </div>
             </div>
         </div>
 
-        <!-- ==================== VIEW 2: CATEGORY / SEARCH GRID VIEW ==================== -->
+        <!-- VIEW 2: SEARCH RESULT GRID -->
         <div id="resultsGridContainer" class="hidden">
-            <div class="flex justify-between items-center mb-6">
-                <h2 id="searchTitleText" class="text-xl font-bold text-white flex items-center gap-2">Catalog Browse</h2>
-                <button onclick="showHomepage()" class="text-xs text-gray-400 hover:text-white transition-colors">Back to Home</button>
+            <div class="flex items-center justify-between border-b border-slate-900 pb-4 mb-6">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2.5">Search Results</h2>
+                <button onclick="showHomepage()" class="text-xs font-medium text-sky-400 hover:underline">Return Home</button>
             </div>
-            <div id="resultsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                <!-- Dynamic grid feeds -->
-            </div>
+            <div id="resultsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
         </div>
 
-        <!-- ==================== VIEW 3: PROFILE DEEP DIVE VIEW ==================== -->
-        <div id="detailViewContainer" class="hidden max-w-5xl mx-auto bg-[#111625]/60 border border-gray-900 rounded-3xl p-6 md:p-8 backdrop-blur-md shadow-2xl">
-            <button id="detailBackButton" class="mb-6 text-xs text-red-400 hover:text-red-300 font-bold uppercase tracking-wider flex items-center gap-2 transition-colors">
-                <i class="fa-solid fa-arrow-left"></i> Back to browse
+        <!-- VIEW 3: DEDICATED RATINGS PROFILE -->
+        <div id="detailViewContainer" class="hidden max-w-5xl mx-auto">
+            <button onclick="backToPreviousView()" class="group mb-6 text-sm text-slate-400 hover:text-white font-semibold flex items-center gap-2 bg-slate-900/50 border border-slate-800/80 px-4 py-2 rounded-xl backdrop-blur-sm">
+                <i class="fa-solid fa-arrow-left group-hover:-translate-x-0.5 transition-transform"></i> Back
             </button>
-            <div id="detailContent">
-                <!-- Detailed metadata profiles load here -->
-            </div>
+            <div id="detailContent" class="space-y-8"></div>
         </div>
 
     </main>
 
-    <!-- JavaScript Application Engine -->
+    <!-- Script Application Logic -->
     <script>
         const BASE_URL = 'https://www.omdbapi.com/'; 
         const API_KEY = 'thewdb'; 
 
-        // Target Elements Hooking
         const searchInput = document.getElementById('searchInput');
         const previewDropdown = document.getElementById('previewDropdown');
         const searchForm = document.getElementById('searchForm');
+        
         const homepageContainer = document.getElementById('homepageContainer');
         const resultsGridContainer = document.getElementById('resultsGridContainer');
         const resultsGrid = document.getElementById('resultsGrid');
         const detailViewContainer = document.getElementById('detailViewContainer');
         const detailContent = document.getElementById('detailContent');
-        const searchTitleText = document.getElementById('searchTitleText');
-        const detailBackButton = document.getElementById('detailBackButton');
+        
+        const statusState = document.getElementById('statusState');
+        const statusSpinner = document.getElementById('statusSpinner');
+        const statusMessage = document.getElementById('statusMessage');
 
         let debounceTimer;
-        let activeNavigationStack = 'home'; 
+        let activeView = 'home'; 
 
-        // Deep Index Global Content Pools (IMDb IDs)
-        const globalMoviePool = [
-            'tt0111161', 'tt0468569', 'tt1375666', 'tt0137523', 'tt0109830', 'tt0068646', 'tt0110912', 'tt0816692',
-            'tt0120737', 'tt0167260', 'tt1130884', 'tt2084970', 'tt0371724', 'tt0499549', 'tt0114746', 'tt0120338',
-            'tt0993846', 'tt0463998', 'tt2488496', 'tt0087332', 'tt0097722', 'tt0103064', 'tt0112281', 'tt0241587',
-            'tt0848228', 'tt0451279', 'tt0478970', 'tt1877832', 'tt0172495', 'tt2395417', 'tt0095016', 'tt0120815'
-        ];
+        // Deep Content Pool for Dynamic Home Catalog Randomization
+        const spotlightPool = ['tt1375666', 'tt0816692', 'tt1130884', 'tt6751668', 'tt0111161', 'tt2488496', 'tt0468569', 'tt1375666'];
+        
+        const movieMasterPool = [
+            'tt1375666', 'tt0816692', 'tt1130884', 'tt6751668', 'tt0111161', 
+            'tt0468569', 'tt0109830', 'tt0133093', 'tt0068646', 'tt15097216',
+            'tt1160419', 'tt2084970', 'tt3501632', 'tt0110912', 'tt0114709'
+        ]; // Inception, Interstellar, Shutter Island, Parasite, Shawshank, Dark Knight, Forrest Gump, Matrix, Godfather, Dune 2, etc.
+        
+        const seriesMasterPool = [
+            'tt0944947', 'tt1190634', 'tt2357228', 'tt9140554', 'tt8111088', 
+            'tt0903747', 'tt4786824', 'tt6468322', 'tt4574334', 'tt12448384',
+            'tt2560112', 'tt14366814', 'tt5103134', 'tt1798709', 'tt3032476'
+        ]; // Game of Thrones, The Boys, Modern Family, Loki, Mandalorian, Breaking Bad, The Crown, Money Heist, Stranger Things, Shogun, etc.
 
-        const globalTVPool = [
-            'tt0903747', 'tt0944947', 'tt4574334', 'tt3032476', 'tt0118301', 'tt0475759', 'tt2356777', 'tt6468322',
-            'tt0411008', 'tt0290978', 'tt1430612', 'tt4707054', 'tt1190565', 'tt0904208', 'tt2560110', 'tt0108778',
-            'tt2250750', 'tt0805663', 'tt5180504', 'tt1087896', 'tt3322312', 'tt0247082', 'tt2149151', 'tt0436992',
-            'tt0904208', 'tt3107288', 'tt1475582', 'tt2442522', 'tt4230162', 'tt5771628', 'tt0120611', 'tt0986263'
-        ];
-
+        // Application Start
         window.addEventListener('DOMContentLoaded', () => {
-            initializeHomepageShelves();
+            initializeDynamicHomepage();
         });
 
-        // Fisher-Yates Complete Randomized Array Shuffle Engine
-        function shuffleArray(array) {
-            let m = array.length, t, i;
-            while (m) {
-                i = Math.floor(Math.random() * m--);
-                t = array[m];
-                array[m] = array[i];
-                array[i] = t;
-            }
-            return array;
+        function initializeDynamicHomepage() {
+            // 1. Pick and render a random spotlight piece
+            const randomSpotlightId = spotlightPool[Math.floor(Math.random() * spotlightPool.length)];
+            loadHeroSpotlight(randomSpotlightId);
+
+            // 2. Mix, slice and paint dynamic rows
+            const randomMovies = shuffleArray([...movieMasterPool]).slice(0, 8);
+            const randomSeries = shuffleArray([...seriesMasterPool]).slice(0, 8);
+
+            loadShelfCollection(randomMovies, 'movieShelf');
+            loadShelfCollection(randomSeries, 'seriesShelf');
         }
 
-        // 1. Setup Random Shuffle Home Layout Data Shelves
-        async function initializeHomepageShelves() {
-            const movieRow = document.getElementById('trendingMoviesRow');
-            const tvRow = document.getElementById('popularTVRow');
-            
-            movieRow.innerHTML = `<div class="col-span-full py-8 text-center text-xs text-gray-500 w-full"><i class="fa-solid fa-circle-notch animate-spin text-red-500 mr-2"></i>Shuffling movies...</div>`;
-            tvRow.innerHTML = `<div class="col-span-full py-8 text-center text-xs text-gray-500 w-full"><i class="fa-solid fa-circle-notch animate-spin text-purple-500 mr-2"></i>Shuffling series...</div>`;
-
-            // Create separated tracking instances of scrambled ID lists
-            const shuffledMovies = shuffleArray([...globalMoviePool]).slice(0, 8);
-            const shuffledTV = shuffleArray([...globalTVPool]).slice(0, 8);
-
-            // Fetch and mount spotlight layer configuration asynchronously from choice item
-            setupDynamicHero(shuffledMovies[0]);
-
-            // Load Movie Shuffled Shelf items
-            movieRow.innerHTML = '';
-            for (let id of shuffledMovies) {
-                const data = await fetchProfileById(id);
-                if (data) movieRow.insertAdjacentHTML('beforeend', buildHorizontalCard(data));
+        // Standard Utility Shuffle Function
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
             }
-            
-            // Load TV Show Shuffled Shelf items
-            tvRow.innerHTML = '';
-            for (let id of shuffledTV) {
-                const data = await fetchProfileById(id);
-                if (data) tvRow.insertAdjacentHTML('beforeend', buildHorizontalCard(data));
-            }
+            return arr;
         }
 
-        async function fetchProfileById(id) {
+        // Spotlight Random Content Loader
+        async function loadHeroSpotlight(id) {
             try {
-                const res = await fetch(`${BASE_URL}?apikey=${API_KEY}&i=${id}`);
-                return await res.json();
-            } catch { return null; }
-        }
-
-        async function setupDynamicHero(id) {
-            const data = await fetchProfileById(id);
-            if (!data) return;
-            
-            const heroBanner = document.getElementById('spotlightHero');
-            const backdropPoster = (data.Poster && data.Poster !== 'N/A') ? data.Poster : '';
-            heroBanner.style.backgroundImage = `url('${backdropPoster}')`;
-            heroBanner.style.backgroundPosition = 'center 25%';
-
-            document.getElementById('heroDynamicContent').innerHTML = `
-                <span class="text-xs bg-red-600 text-white font-extrabold px-2.5 py-0.5 rounded uppercase tracking-widest mb-3 inline-block animate-pulse">Featured Today</span>
-                <h2 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-2 dropdown-shadow-md">${data.Title}</h2>
-                <p class="text-xs md:text-sm text-gray-200 font-medium line-clamp-2 bg-black/50 backdrop-blur-sm p-2.5 rounded-xl border border-white/5 shadow">${data.Plot}</p>
-                <button onclick="selectItem('${data.imdbID}')" class="mt-4 px-5 py-2 bg-white text-black text-xs font-bold rounded-lg uppercase tracking-wider hover:bg-gray-200 transition-colors shadow-lg">See Ratings</button>
-            `;
-        }
-
-        function buildHorizontalCard(item) {
-            const displayType = item.Type === 'series' ? 'TV SHOW' : 'MOVIE';
-            const poster = (item.Poster && item.Poster !== 'N/A') ? item.Poster : 'https://via.placeholder.com/300x450?text=No+Poster';
-            return `
-                <div onclick="selectItem('${item.imdbID}')" class="w-40 sm:w-44 flex-shrink-0 cursor-pointer group bg-gray-900/30 rounded-xl overflow-hidden border border-gray-900 hover:border-gray-700 transition-all duration-300">
-                    <div class="relative aspect-[2/3] overflow-hidden bg-gray-950">
-                        <img src="${poster}" alt="${item.Title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                        <span class="absolute bottom-2 left-2 text-[9px] font-black uppercase tracking-widest bg-black/80 px-2 py-0.5 rounded text-gray-300 border border-gray-800">${displayType}</span>
-                    </div>
-                    <div class="p-3">
-                        <h4 class="text-xs font-bold text-white truncate group-hover:text-red-400 transition-colors">${item.Title}</h4>
-                        <div class="flex items-center justify-between mt-1 text-[10px] text-gray-500 font-medium">
-                            <span>${item.Year}</span>
-                            <span class="text-emerald-400 font-bold"><i class="fa-solid fa-star text-[8px]"></i> ${item.imdbRating}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // 2. Category Browse Grid System
-        async function filterCategoryPage(type) {
-            homepageContainer.classList.add('hidden');
-            detailViewContainer.classList.add('hidden');
-            resultsGridContainer.classList.remove('hidden');
-            
-            updateNavbarHighlight(type);
-
-            const displayTitle = type === 'series' ? 'Premium TV Shows Collection' : 'Premium Movies Collection';
-            searchTitleText.innerText = displayTitle;
-            resultsGrid.innerHTML = `<div class="col-span-full text-center py-12 text-sm text-gray-500"><i class="fa-solid fa-spinner animate-spin text-red-500 mr-2"></i>Loading category dashboard indexes...</div>`;
-            activeNavigationStack = type;
-
-            const trackingPool = type === 'series' ? [...globalTVPool] : [...globalMoviePool];
-            shuffleArray(trackingPool);
-            
-            resultsGrid.innerHTML = '';
-            for (let id of trackingPool.slice(0, 15)) {
-                const data = await fetchProfileById(id);
-                if (data) {
-                    const poster = (data.Poster && data.Poster !== 'N/A') ? data.Poster : 'https://via.placeholder.com/300x450?text=No+Poster';
-                    const displayTag = data.Type === 'series' ? 'TV SHOW' : 'MOVIE';
-                    const gridCardHtml = `
-                        <div class="bg-[#121824] border border-gray-900 rounded-2xl overflow-hidden shadow-lg hover:border-red-500/40 transition-all duration-300 flex flex-col group cursor-pointer" onclick="selectItem('${data.imdbID}')">
-                            <div class="relative overflow-hidden aspect-[2/3] bg-gray-950">
-                                <img src="${poster}" alt="${data.Title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                                <span class="absolute top-2 left-2 text-[9px] uppercase tracking-widest font-black bg-black/80 text-red-400 px-2 py-0.5 rounded border border-gray-900">${displayTag}</span>
-                            </div>
-                            <div class="p-4 flex flex-col flex-grow justify-between">
-                                <h3 class="font-bold text-sm text-white line-clamp-2 group-hover:text-red-400 transition-colors">${data.Title}</h3>
-                                <div class="flex items-center justify-between mt-2 text-xs text-gray-500 font-medium">
-                                    <span>${data.Year}</span>
-                                    <span class="text-emerald-400 font-bold"><i class="fa-solid fa-star text-[9px]"></i> ${data.imdbRating}</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    resultsGrid.insertAdjacentHTML('beforeend', gridCardHtml);
+                const res = await fetch(`${BASE_URL}?apikey=${API_KEY}&i=${id}&plot=full`);
+                const data = await res.json();
+                if(data.Response === "True") {
+                    document.getElementById('heroBg').style.backgroundImage = `url('${data.Poster}')`;
+                    document.getElementById('heroTitle').innerText = data.Title;
+                    document.getElementById('heroPlot').innerText = data.Plot !== 'N/A' ? data.Plot : 'No description recorded.';
+                    document.getElementById('heroBtn').onclick = () => selectItem(data.imdbID);
                 }
-            }
+            } catch(e) { console.error("Spotlight rendering error", e); }
         }
 
-        function updateNavbarHighlight(activeStack) {
-            document.getElementById('navHome').className = activeStack === 'home' ? 'text-white font-medium cursor-pointer' : 'text-gray-400 cursor-pointer hover:text-white transition-colors';
-            document.getElementById('navMovies').className = activeStack === 'movie' ? 'text-white font-medium cursor-pointer' : 'text-gray-400 cursor-pointer hover:text-white transition-colors';
-            document.getElementById('navTV').className = activeStack === 'series' ? 'text-white font-medium cursor-pointer' : 'text-gray-400 cursor-pointer hover:text-white transition-colors';
-        }
-
-        // 3. Autocomplete Engine
+        // Auto-Complete System
         searchInput.addEventListener('input', (e) => {
             const query = e.target.value.trim();
             clearTimeout(debounceTimer);
@@ -335,227 +262,287 @@
 
         function renderPreviewDropdown(items) {
             previewDropdown.innerHTML = items.map(item => {
-                const poster = (item.Poster && item.Poster !== 'N/A') ? item.Poster : 'https://via.placeholder.com/50x75?text=No+Img';
-                const labelType = item.Type === 'series' ? 'TV SHOW' : item.Type.toUpperCase();
+                const poster = (item.Poster && item.Poster !== 'N/A') ? item.Poster : 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=120&auto=format&fit=crop';
                 return `
-                    <div class="flex items-center justify-between p-2.5 hover:bg-gray-800/40 cursor-pointer border-b border-gray-900 last:border-0" onclick="selectItem('${item.imdbID}')">
-                        <div class="flex items-center space-x-3 truncate">
-                            <img src="${poster}" class="w-8 h-11 object-cover rounded bg-gray-900">
-                            <div>
-                                <span class="text-sm font-semibold text-gray-200 block truncate">${item.Title}</span>
-                                <span class="text-[10px] text-gray-500 uppercase font-bold tracking-wider">${labelType} • ${item.Year}</span>
+                    <div class="flex items-center justify-between p-3.5 hover:bg-slate-800/60 cursor-pointer border-b border-slate-800/60 last:border-0 transition-colors" onclick="selectItem('${item.imdbID}')">
+                        <div class="flex items-center space-x-4 truncate">
+                            <img src="${poster}" class="w-9 h-12 object-cover rounded-lg bg-slate-950 flex-shrink-0 border border-slate-800">
+                            <div class="truncate">
+                                <p class="text-sm font-semibold text-slate-200 truncate">${item.Title}</p>
+                                <p class="text-xs text-slate-500 font-medium mt-0.5">${item.Year} (${item.Type === 'series' ? 'TV' : 'Movie'})</p>
                             </div>
                         </div>
-                        <i class="fa-solid fa-angle-right text-xs text-red-500 pr-2"></i>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-600 pr-2"></i>
                     </div>
                 `;
             }).join('');
             previewDropdown.classList.remove('hidden');
         }
 
-        // 4. Form Search Execution
+        // Global Search Submission Form
         searchForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const query = searchInput.value.trim();
             if (!query) return;
-            
+
             previewDropdown.classList.add('hidden');
             homepageContainer.classList.add('hidden');
             detailViewContainer.classList.add('hidden');
-            resultsGridContainer.classList.remove('hidden');
-            searchTitleText.innerText = `Search Results for: "${query}"`;
-            activeNavigationStack = 'search';
-            updateNavbarHighlight('none');
+            showLoader('Searching Database Catalog...');
 
             try {
                 const res = await fetch(`${BASE_URL}?apikey=${API_KEY}&s=${encodeURIComponent(query)}`);
                 const data = await res.json();
+                hideLoader();
+                
                 if (data.Response === "True" && data.Search) {
-                    resultsGrid.innerHTML = data.Search.map(item => {
-                        const poster = (item.Poster && item.Poster !== 'N/A') ? item.Poster : 'https://via.placeholder.com/300x450?text=No+Poster';
-                        const typeLabel = item.Type === 'series' ? 'TV SHOW' : item.Type.toUpperCase();
-                        return `
-                            <div class="bg-[#121824] border border-gray-900 rounded-2xl overflow-hidden shadow-lg hover:border-red-500/40 transition-all duration-300 flex flex-col group cursor-pointer" onclick="selectItem('${item.imdbID}')">
-                                <div class="relative overflow-hidden aspect-[2/3] bg-gray-950">
-                                    <img src="${poster}" alt="${item.Title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                                    <span class="absolute top-2 left-2 text-[9px] uppercase tracking-widest font-black bg-black/80 text-red-400 px-2 py-0.5 rounded border border-gray-900">${typeLabel}</span>
-                                </div>
-                                <div class="p-4 flex flex-col flex-grow justify-between">
-                                    <h3 class="font-bold text-sm text-white line-clamp-2 group-hover:text-red-400 transition-colors">${item.Title}</h3>
-                                    <span class="text-xs text-gray-500 mt-2 font-medium">${item.Year}</span>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
+                    activeView = 'search';
+                    resultsGridContainer.classList.remove('hidden');
+                    renderGrid(data.Search, resultsGrid);
                 } else {
-                    resultsGrid.innerHTML = `<div class="col-span-full text-center py-12 text-sm text-gray-500">No content structures found matching your entry.</div>`;
+                    showErrorMessage('No titles located matching that search term.');
                 }
-            } catch {
-                resultsGrid.innerHTML = `<div class="col-span-full text-center py-12 text-sm text-red-500">Error transmitting search query requests.</div>`;
+            } catch (err) {
+                showErrorMessage('Network lookup error occurred.');
             }
         });
 
-        // 5. Deep Profiles Management Layouts
+        function renderGrid(items, elementTarget) {
+            elementTarget.innerHTML = items.map(item => {
+                const poster = (item.Poster && item.Poster !== 'N/A') ? item.Poster : 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=400&auto=format&fit=crop';
+                return `
+                    <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl overflow-hidden shadow-lg hover:border-slate-700 group flex flex-col transition-all duration-300 cursor-pointer backdrop-blur-md" onclick="selectItem('${item.imdbID}')">
+                        <div class="relative overflow-hidden aspect-[2/3] bg-slate-950">
+                            <img src="${poster}" alt="${item.Title}" class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500">
+                            <span class="absolute top-2.5 left-2.5 text-[10px] uppercase tracking-wider font-bold bg-slate-950/80 backdrop-blur-md text-sky-400 px-2 py-0.5 rounded border border-slate-800/40">${item.Type === 'series' ? 'TV' : 'Movie'}</span>
+                        </div>
+                        <div class="p-3.5 flex flex-col flex-grow justify-between gap-1">
+                            <h3 class="font-semibold text-sm text-slate-200 group-hover:text-white line-clamp-2 transition-colors">${item.Title}</h3>
+                            <span class="text-xs text-slate-500 font-medium">${item.Year}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Lazy-loading Dynamic Stream Rows
+        async function loadShelfCollection(idArray, elementId) {
+            const targetShelf = document.getElementById(elementId);
+            targetShelf.innerHTML = '';
+            
+            for (let id of idArray) {
+                try {
+                    const res = await fetch(`${BASE_URL}?apikey=${API_KEY}&i=${id}`);
+                    const item = await res.json();
+                    if(item.Response === "True") {
+                        const card = document.createElement('div');
+                        card.className = 'w-44 sm:w-48 flex-shrink-0 snap-start group cursor-pointer bg-slate-900/30 border border-slate-800/60 rounded-2xl overflow-hidden p-2 hover:border-slate-700 transition-all duration-300';
+                        card.onclick = () => selectItem(item.imdbID);
+                        
+                        const poster = (item.Poster && item.Poster !== 'N/A') ? item.Poster : 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=400&auto=format&fit=crop';
+                        card.innerHTML = `
+                            <div class="relative overflow-hidden aspect-[2/3] bg-slate-950 rounded-xl mb-3">
+                                <img src="${poster}" class="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500">
+                                <div class="absolute bottom-2 right-2 text-[10px] bg-slate-950/80 backdrop-blur-md text-emerald-400 px-1.5 py-0.5 rounded font-bold border border-slate-800/40"><i class="fa-solid fa-star text-[9px] mr-1"></i>${item.imdbRating}</div>
+                            </div>
+                            <h3 class="font-semibold text-xs text-slate-200 line-clamp-1 group-hover:text-white transition-colors px-1">${item.Title}</h3>
+                            <p class="text-[11px] text-slate-500 font-medium mt-0.5 px-1">${item.Year} • ${item.Type === 'series' ? 'TV' : 'Movie'}</p>
+                        `;
+                        targetShelf.appendChild(card);
+                    }
+                } catch(e) { console.error("Shelf dynamic item load failure", e); }
+            }
+        }
+
+        // Detailed Content Display Node
         async function selectItem(imdbID) {
             previewDropdown.classList.add('hidden');
             homepageContainer.classList.add('hidden');
             resultsGridContainer.classList.add('hidden');
-            detailViewContainer.classList.remove('hidden');
-
-            detailContent.innerHTML = `<div class="text-center py-12 text-sm text-gray-500"><i class="fa-solid fa-circle-notch animate-spin text-red-500 mr-2 text-base"></i> Compiling profile layers...</div>`;
+            showLoader('Loading Title Profile...');
 
             try {
-                const data = await fetchProfileById(imdbID);
-                if (data && data.Response === "True") {
+                const res = await fetch(`${BASE_URL}?apikey=${API_KEY}&i=${imdbID}&plot=full`);
+                const data = await res.json();
+                hideLoader();
+                if (data.Response === "True") {
+                    activeView = 'details';
                     renderDetailCard(data);
+                } else {
+                    showErrorMessage('Failed to display item profile details.');
                 }
-            } catch {
-                detailContent.innerHTML = `<div class="text-center py-12 text-sm text-red-500">Failed to render profile metadata.</div>`;
+            } catch (err) {
+                showErrorMessage('Data extraction failure.');
             }
         }
 
         function renderDetailCard(data) {
-            const poster = (data.Poster && data.Poster !== 'N/A') ? data.Poster : 'https://via.placeholder.com/300x450?text=No+Poster';
-            const displayType = data.Type === 'series' ? 'TV SHOW' : data.Type.toUpperCase();
-            const isTV = data.Type === 'series';
+            detailViewContainer.classList.remove('hidden');
+            const poster = (data.Poster && data.Poster !== 'N/A') ? data.Poster : 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=500&auto=format&fit=crop';
+            const isSeries = data.Type === 'series';
 
-            if (activeNavigationStack === 'home') {
-                detailBackButton.setAttribute('onclick', 'showHomepage()');
-            } else {
-                detailBackButton.setAttribute('onclick', 'backToGrid()');
-            }
-
-            let headerCardHtml = `
-                <div class="flex flex-col gap-8 md:flex-row items-center md:items-start">
-                    <img src="${poster}" class="w-48 sm:w-56 rounded-2xl border border-gray-900 shadow-2xl object-cover bg-gray-950 flex-shrink-0">
-                    <div class="flex-grow text-center md:text-left">
-                        <div class="flex items-center justify-center md:justify-start gap-2 text-xs font-bold uppercase tracking-wider text-red-400 mb-2">
-                            <span class="bg-red-500/10 px-2.5 py-0.5 rounded border border-red-500/20">${displayType}</span>
+            let profileHeaderHtml = `
+                <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start bg-slate-900/20 border border-slate-800/50 rounded-3xl p-6 shadow-xl backdrop-blur-sm">
+                    <img src="${poster}" class="w-44 rounded-xl border border-slate-800/80 shadow-2xl object-cover bg-slate-950 flex-shrink-0">
+                    <div class="flex-grow space-y-3 text-center md:text-left">
+                        <div class="flex items-center justify-center md:justify-start gap-2 text-xs font-semibold uppercase tracking-wider text-sky-400">
+                            <span class="bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">${data.Type === 'series' ? 'TV Series' : 'Movie'}</span>
                             <span>•</span><span>${data.Year}</span><span>•</span><span>${data.Runtime}</span>
                         </div>
-                        <h2 class="text-3xl md:text-4xl font-black text-white mb-2 tracking-tight">${data.Title}</h2>
-                        <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mb-5">${data.Genre}</p>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">${data.Title}</h2>
+                        <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">${data.Genre}</p>
                         
-                        <div class="bg-black/30 border border-gray-900 rounded-xl p-3.5 inline-flex items-center gap-5 mb-5 text-left">
-                            <div><span class="text-[10px] uppercase tracking-wider text-gray-500 font-bold block mb-0.5">IMDb Rating</span><span class="text-lg font-black text-emerald-400">${data.imdbRating}<span class="text-xs text-gray-600 font-normal">/10</span></span></div>
-                            <div class="border-l border-gray-800 h-8"></div>
-                            <div><span class="text-[10px] uppercase tracking-wider text-gray-500 font-bold block mb-0.5">Total Votes</span><span class="text-sm font-bold text-gray-300">${data.imdbVotes}</span></div>
+                        <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-3 inline-flex items-center gap-4 shadow-inner text-left">
+                            <div><span class="text-[10px] text-slate-500 font-bold uppercase block tracking-wider">IMDb Rating</span><span class="text-base font-extrabold text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-star text-xs"></i>${data.imdbRating}<span class="text-xs text-slate-500 font-normal">/10</span></span></div>
+                            <div class="border-l border-slate-800 h-6"></div>
+                            <div><span class="text-[10px] text-slate-500 font-bold uppercase block tracking-wider">Total Votes</span><span class="text-sm font-semibold text-slate-300">${data.imdbVotes}</span></div>
                         </div>
-                        <p class="text-sm text-gray-400 leading-relaxed max-w-3xl font-light">${data.Plot !== 'N/A' ? data.Plot : 'No description records logged.'}</p>
-                        <div class="mt-4 pt-4 border-t border-gray-900 text-xs text-gray-500 space-y-1">
-                            <div><span class="text-gray-400 font-semibold">Director:</span> ${data.Director}</div>
-                            <div><span class="text-gray-400 font-semibold">Starring:</span> ${data.Actors}</div>
-                        </div>
+                        <p class="text-sm text-slate-300 leading-relaxed font-light text-left pt-2"><span class="font-medium text-slate-400">Plot:</span> ${data.Plot !== 'N/A' ? data.Plot : 'No detailed plot documentation available.'}</p>
                     </div>
                 </div>
             `;
 
-            let episodesBoardHtml = '';
-            if (isTV && data.totalSeasons !== 'N/A') {
-                let seasonDropdownOptions = '';
+            let episodicEngineHtml = '';
+            if (isSeries && data.totalSeasons !== 'N/A') {
+                let seasonOptions = '';
                 for (let i = 1; i <= parseInt(data.totalSeasons); i++) {
-                    seasonDropdownOptions += `<option value="${i}">Season ${i}</option>`;
+                    seasonOptions += `<option value="${i}">Season ${i}</option>`;
                 }
 
-                episodesBoardHtml = `
-                    <div class="mt-12 pt-8 border-t border-gray-900">
+                episodicEngineHtml = `
+                    <div class="mt-8 border-t border-slate-900 pt-6">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                             <div>
-                                <h3 class="text-lg font-black text-white flex items-center gap-2">
-                                    <i class="fa-solid fa-rectangle-list text-red-500"></i> Season Episode Catalog
-                                </h3>
-                                <p class="text-xs text-gray-500 mt-0.5">Browse individual chronological episode profiles with custom posters</p>
+                                <h3 class="text-base font-bold text-white">Episode Guide</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Select a season to browse individual episode images and ratings</p>
                             </div>
-                            <select id="seasonSelector" class="bg-gray-900 border border-gray-800 text-xs font-bold uppercase tracking-wider rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-red-500 cursor-pointer" onchange="loadSeasonEpisodes('${data.imdbID}', this.value)">
-                                ${seasonDropdownOptions}
-                            </select>
+                            <div class="relative">
+                                <select id="seasonSelector" class="w-full sm:w-auto bg-slate-900 border border-slate-800 text-xs font-semibold rounded-xl pl-3 pr-8 py-2 text-white focus:outline-none focus:border-sky-500 cursor-pointer appearance-none" onchange="loadEpisodes('${data.imdbID}', this.value)">
+                                    ${seasonOptions}
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-2.5 pointer-events-none text-slate-500 text-[10px]"><i class="fa-solid fa-chevron-down"></i></div>
+                            </div>
                         </div>
-                        <div id="episodesLoader" class="hidden text-center text-sm text-gray-500 py-8"><i class="fa-solid fa-spinner animate-spin mr-2 text-red-500"></i>Streaming episode array grids...</div>
-                        <div id="episodesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <!-- Loaded dynamically via loop -->
-                        </div>
+                        <div id="episodesLoading" class="hidden text-center text-xs text-slate-500 py-8"><div class="inline-block animate-spin w-4 h-4 border-2 border-sky-500 border-t-transparent rounded-full mr-2 align-middle"></div>Loading episodes...</div>
+                        <div id="episodesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                     </div>
                 `;
             }
 
-            detailContent.innerHTML = headerCardHtml + episodesBoardHtml;
+            detailContent.innerHTML = profileHeaderHtml + episodicEngineHtml;
 
-            if (isTV && data.totalSeasons !== 'N/A') {
-                loadSeasonEpisodes(data.imdbID, 1);
+            if (isSeries && data.totalSeasons !== 'N/A') {
+                loadEpisodes(data.imdbID, 1);
             }
         }
 
-        async function loadSeasonEpisodes(imdbID, seasonNum) {
+        // Sub-request Engine for Individual Episode Thumbnails
+        async function loadEpisodes(imdbID, seasonNum) {
             const grid = document.getElementById('episodesGrid');
-            const loader = document.getElementById('episodesLoader');
+            const loader = document.getElementById('episodesLoading');
             grid.innerHTML = '';
             loader.classList.remove('hidden');
 
             try {
                 const res = await fetch(`${BASE_URL}?apikey=${API_KEY}&i=${imdbID}&Season=${seasonNum}`);
                 const data = await res.json();
-                loader.classList.add('hidden');
-
+                
                 if (data.Response === "True" && data.Episodes) {
-                    for (let ep of data.Episodes) {
-                        const epDetails = await fetchEpisodeArtwork(ep.imdbID);
-                        const epPoster = (epDetails && epDetails.Poster && epDetails.Poster !== 'N/A') ? epDetails.Poster : 'https://via.placeholder.com/320x180?text=Episode+Artwork';
-                        const score = ep.imdbRating && ep.imdbRating !== 'N/A' ? ep.imdbRating : 'N/A';
-
-                        const itemCard = `
-                            <div class="bg-[#131926] border border-gray-900 rounded-xl overflow-hidden hover:border-gray-800 transition-all duration-300 flex flex-col justify-between group shadow-lg">
-                                <div class="relative aspect-video w-full bg-gray-950 overflow-hidden border-b border-gray-900">
-                                    <img src="${epPoster}" alt="${ep.Title}" class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300">
-                                    <span class="absolute top-2 left-2 text-[9px] font-black tracking-wider uppercase bg-black/80 px-2 py-0.5 rounded text-gray-400">Ep ${ep.Episode}</span>
+                    grid.innerHTML = data.Episodes.map((ep, idx) => `
+                        <div id="ep-card-${idx}" class="bg-slate-900/30 border border-slate-800/60 rounded-xl overflow-hidden p-3.5 flex gap-4 hover:border-slate-700 transition-colors shadow-md backdrop-blur-sm">
+                            <div class="w-24 h-16 sm:w-28 sm:h-20 bg-slate-950 rounded-lg flex-shrink-0 overflow-hidden relative border border-slate-800/40">
+                                <img id="ep-img-${idx}" src="" class="w-full h-full object-cover opacity-0 transition-opacity duration-300">
+                                <div id="ep-fallback-${idx}" class="absolute inset-0 flex items-center justify-center bg-slate-900 text-slate-600 text-xs font-bold font-sans">EP ${ep.Episode}</div>
+                            </div>
+                            <div class="flex-grow flex flex-col justify-between min-w-0">
+                                <div>
+                                    <div class="flex items-center justify-between gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                        <span>Episode ${ep.Episode}</span>
+                                        <span class="font-normal normal-case">${ep.Released !== 'N/A' ? ep.Released : ''}</span>
+                                    </div>
+                                    <h4 class="font-bold text-sm text-slate-200 mt-0.5 truncate">${ep.Title}</h4>
                                 </div>
-                                <div class="p-4 flex flex-col justify-between flex-grow">
-                                    <div class="mb-3">
-                                        <h4 class="font-bold text-sm text-white line-clamp-1 group-hover:text-red-400 transition-colors">${ep.Title}</h4>
-                                        <span class="text-[10px] text-gray-500 font-medium">${ep.Released !== 'N/A' ? ep.Released : 'Release unknown'}</span>
-                                    </div>
-                                    <div class="flex items-center justify-between pt-2.5 border-t border-gray-950 text-xs">
-                                        <span class="text-gray-500">Rating</span>
-                                        <span class="font-black text-emerald-400 flex items-center gap-1 bg-emerald-500/5 border border-emerald-500/10 px-2 py-0.5 rounded-md"><i class="fa-solid fa-star text-[9px]"></i> ${score}</span>
-                                    </div>
+                                <div class="flex justify-between items-center mt-2 text-[11px] font-medium text-slate-500">
+                                    <span>IMDb Rating</span>
+                                    <span class="font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md"><i class="fa-solid fa-star text-[9px] mr-1"></i>${ep.imdbRating !== 'N/A' ? ep.imdbRating : 'N/A'}</span>
                                 </div>
                             </div>
-                        `;
-                        grid.insertAdjacentHTML('beforeend', itemCard);
-                    }
+                        </div>
+                    `).join('');
+                    
+                    loader.classList.add('hidden');
+
+                    // Fire image lookup fetches concurrently
+                    data.Episodes.forEach(async (ep, idx) => {
+                        if (ep.imdbID) {
+                            try {
+                                const epDetailsRes = await fetch(`${BASE_URL}?apikey=${API_KEY}&i=${ep.imdbID}`);
+                                const epDetails = await epDetailsRes.json();
+                                const imgElement = document.getElementById(`ep-img-${idx}`);
+                                const fallbackElement = document.getElementById(`ep-fallback-${idx}`);
+                                
+                                if (epDetails.Response === "True" && epDetails.Poster && epDetails.Poster !== 'N/A' && imgElement) {
+                                    imgElement.src = epDetails.Poster;
+                                    imgElement.onload = () => {
+                                        imgElement.classList.remove('opacity-0');
+                                        if (fallbackElement) fallbackElement.classList.add('hidden');
+                                    }
+                                }
+                            } catch (e) { console.error("Episode thumbnail fetch error", e); }
+                        }
+                    });
+
                 } else {
-                    grid.innerHTML = `<div class="col-span-full text-center py-6 text-sm text-gray-600">No tracks found.</div>`;
+                    loader.classList.add('hidden');
+                    grid.innerHTML = `<div class="col-span-full text-center text-xs text-slate-600 border border-dashed border-slate-800 py-8 rounded-xl bg-slate-900/10">No entries identified for this specific season.</div>`;
                 }
             } catch (err) {
                 loader.classList.add('hidden');
-                grid.innerHTML = `<div class="col-span-full text-center py-6 text-sm text-red-500">Failed to render segment tracks.</div>`;
+                grid.innerHTML = `<div class="col-span-full text-center text-xs text-red-400 py-8">Failed to index episodes.</div>`;
             }
-        }
-
-        async function fetchEpisodeArtwork(epImdbID) {
-            try {
-                const res = await fetch(`${BASE_URL}?apikey=${API_KEY}&i=${epImdbID}`);
-                return await res.json();
-            } catch { return null; }
         }
 
         // Navigation Controllers
         function showHomepage() {
+            activeView = 'home';
+            searchInput.value = '';
+            previewDropdown.classList.add('hidden');
             detailViewContainer.classList.add('hidden');
             resultsGridContainer.classList.add('hidden');
+            hideLoader();
             homepageContainer.classList.remove('hidden');
-            searchInput.value = '';
-            activeNavigationStack = 'home';
-            updateNavbarHighlight('home');
-            // Trigger automatic randomized shuffling on home visits
-            initializeHomepageShelves();
+            
+            // Re-shuffle everything when returning to the dashboard naturally
+            initializeDynamicHomepage();
         }
 
-        function backToGrid() {
+        function backToPreviousView() {
             detailViewContainer.classList.add('hidden');
-            resultsGridContainer.classList.remove('hidden');
-            updateNavbarHighlight(activeNavigationStack);
+            if(activeView === 'search') {
+                resultsGridContainer.classList.remove('hidden');
+            } else {
+                homepageContainer.classList.remove('hidden');
+            }
         }
 
+        function showLoader(msg) {
+            statusState.classList.remove('hidden');
+            statusSpinner.classList.remove('hidden');
+            statusMessage.innerText = msg;
+        }
+
+        function hideLoader() {
+            statusState.classList.add('hidden');
+            statusSpinner.classList.add('hidden');
+        }
+
+        function showErrorMessage(msg) {
+            statusState.classList.remove('hidden');
+            statusSpinner.classList.add('hidden');
+            statusMessage.innerText = msg;
+        }
+
+        // Click wrapper closing mechanics
         document.addEventListener('click', (e) => {
             if (!searchForm.contains(e.target) && !previewDropdown.contains(e.target)) {
                 previewDropdown.classList.add('hidden');
